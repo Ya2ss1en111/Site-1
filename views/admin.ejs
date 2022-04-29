@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>NT Community</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Fontawesome -->
+  <link href="https://kit-pro.fontawesome.com/releases/latest/css/pro.min.css" rel="stylesheet">
+  <!-- Google fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="logo" href="https://cdn.discordapp.com/attachments/963071974446338049/963843489978802196/7F4C352B-A72D-4684-9DD1-070523691C78.png">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mb-5">
+    <div class="row">
+      <div class="col-12 d-flex justify-content-between w-100 align-items-center">
+        <h1>
+          ألادارة
+        </h1>
+        <div dir="rtl" class=" m-5">
+          <button class="btn-md btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">أضافة أداري جديد</button>
+        </div>
+      </div>
+      <% admins.forEach((admin, index) => { %>
+        <div class="col-md-6 mt-4">
+          <div class="card-header d-flex align-items-center justify-content-between fw-bold">
+            <img src="<%- admin.avatarURL %>" class="rounded-circle" height="35"> <span><%- admin.username %> (<small><%- admin.role %></small>)</span>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#mod<%- index %>">التعديل</button>
+            <form method="POST" action="/admins/<%- index %>">
+              <input type="hidden" name="password" value="<%- password %>">
+              <button class="btn btn-danger">حذف</button>
+            </form>
+          </div>
+        </div>
+        <div class="modal fade" id="mod<%- index %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <form class="modal-dialog" method="post" action="/edit/<%- index %>">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><%- admin.username %> (<small><%- admin.role %></small>)</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label>Username</label>
+                  <input type="text" name="username" class="form-control" autocomplete="off" required value="<%- admin.username %>">
+                </div>
+                <div class="form-group">
+                  <label>Avatar URL</label>
+                  <input type="url" name="avatar" class="form-control" autocomplete="off" required value="<%- admin.avatarURL %>">
+                </div>
+                <div class="form-group">
+                  <label>Role</label>
+                  <input type="text" name="role" class="form-control" autocomplete="off" required value="<%- admin.role %>">
+                </div>
+                <input type="hidden" name="password" value="<%- password %>">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      <% }); %>
+      <div class="col-12 d-flex justify-content-between w-100 align-items-center">
+        <h1>
+          الأحصائيات
+        </h1>
+      </div>
+      <div class="col-12">
+        <form class="card" method="post" action="/setstats">
+          <div class="card-body">
+            <div class="form-group">
+              <label>عدد البطولات</label>
+              <input type="number" name="powers" class="form-control" autocomplete="off" required value="<%- stats.powers %>">
+            </div>
+            <div class="form-group">
+              <label>عدد اعضاء الفرقة</label>
+              <input type="number" name="team" class="form-control" autocomplete="off" required value="<%- stats.team %>">
+            </div>
+            <div class="form-group">
+              <label>عدد المتابعين</label>
+              <input type="number" name="followers" class="form-control" autocomplete="off" required value="<%- stats.followers %>">
+            </div>
+            <div class="form-group">
+              <label>عدد الاعبين</label>
+              <input type="number" name="players" class="form-control" autocomplete="off" required value="<%- stats.players %>">
+            </div>
+            <div class="form-group">
+              <label>عدد صناع المحتوى</label>
+              <input type="number" name="creators" class="form-control" autocomplete="off" required value="<%- stats.creators %>">
+            </div>
+            <input type="hidden" name="password" value="<%- password %>">
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary">
+              Save changes
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="col-12 d-flex justify-content-between w-100 align-items-center">
+        <h1>
+          روابط سوشل ميديا
+        </h1>
+      </div>
+      <div class="col-12">
+        <form class="card" method="post" action="/seturls">
+          <div class="card-body">
+            <div class="form-group">
+              <label>youtube</label>
+              <input type="url" name="youtube" class="form-control" autocomplete="off" required value="<%- urls.youtube %>">
+            </div>
+            <div class="form-group">
+              <label>Portfolio Instagram</label>
+              <input type="url" name="instagramp" class="form-control" autocomplete="off" required value="<%- urls.instagramp %>">
+            </div>
+            <div class="form-group">
+              <label>discord</label>
+              <input type="url" name="discord" class="form-control" autocomplete="off" required value="<%- urls.discord %>">
+            </div>
+            <div class="form-group">
+              <label>instagram</label>
+              <input type="url" name="instagram" class="form-control" autocomplete="off" required value="<%- urls.instagram %>">
+            </div>
+            <div class="form-group">
+              <label>twitter</label>
+              <input type="url" name="twitter" class="form-control" autocomplete="off" required value="<%- urls.twitter %>">
+            </div>
+            <div class="form-group">
+              <label>tiktok</label>
+              <input type="url" name="tiktok" class="form-control" autocomplete="off" required value="<%- urls.tiktok %>">
+            </div>
+            
+            <input type="hidden" name="password" value="<%- password %>">
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary">
+              Save changes
+            </button>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+  <div class="col-12 d-flex justify-content-between w-100 align-items-center">
+    <h1>
+      البطولات
+    </h1>
+  </div>
+  <div class="col-12">
+    <% powers.forEach((power, index) => { %>
+    <form class="card" method="post" action="/setpower/<%- index %>">
+      <div class="card-body">
+        <div class="form-group">
+          <label>عنوان البطولة</label>
+          <input type="text" name="title" class="form-control" autocomplete="off" required value="<%- power.title %>">
+        </div>
+        <div class="form-group">
+          <label>محتوى البطولة</label>
+          <input type="text" name="description" class="form-control" autocomplete="off" required value="<%- power.description %>">
+        </div>
+        <div class="form-group">
+          <label>صورة البطولة</label>
+          <input type="url" name="imageURL" class="form-control" autocomplete="off" required value="<%- power.imageURL %>">
+        </div>
+        <input type="hidden" name="password" value="<%- password %>">
+      </div>
+      <div class="card-footer">
+        <button type="submit" class="btn btn-primary">
+          Save changes
+        </button>
+      </div>
+    </form>
+    <% }); %>
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form class="modal-dialog" method="post" action="/add">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" name="username" class="form-control" autocomplete="off" required>
+          </div>
+          <div class="form-group">
+            <label>Avatar URL</label>
+            <input type="url" name="avatar" class="form-control" autocomplete="off" required>
+          </div>
+          <div class="form-group">
+            <label>Role</label>
+            <input type="text" name="role" class="form-control" autocomplete="off" required>
+          </div>
+          <input type="hidden" name="password" value="<%- password %>">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- Bootstrap Javascript & Popper.JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
